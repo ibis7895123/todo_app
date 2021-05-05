@@ -25,12 +25,18 @@ const todoTasksSlice = createSlice({
       }
     },
     updateTodoTask: (state: TodoTasksState, action: PayloadAction<Task>) => {
-      const updatedTasks = state.tasks
-      updatedTasks[action.payload.id] = {
-        id: action.payload.id,
-        title: action.payload.title,
-        date: action.payload.date,
-      }
+      const updatedTasks = state.tasks.map((task) => {
+        // 指定されたidのみ更新した値を返す
+        if (task.id === action.payload.id) {
+          return {
+            id: action.payload.id,
+            title: action.payload.title,
+            date: action.payload.date,
+          }
+        }
+
+        return task
+      })
 
       return {
         ...state,

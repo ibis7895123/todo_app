@@ -37,6 +37,19 @@ function App(): JSX.Element {
               >
                 削除
               </Button>
+
+              <Button
+                variant="contained"
+                onClick={() =>
+                  updateTodoTasks({
+                    id: task.id,
+                    title: 'テスト アップデート',
+                    date: new Date().toString(),
+                  })
+                }
+              >
+                アップデート
+              </Button>
             </div>
           )
         })}
