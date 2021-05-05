@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { NewTask, Task, TodoTasksState } from 'src/types/task'
+import { NewTask, Task, TaskState } from 'src/types/task'
 
-const initialState: TodoTasksState = {
+const initialState: TaskState = {
   currentId: 0,
   tasks: [],
 }
 
-const todoTasksSlice = createSlice({
-  name: 'todoTasks',
+const tasksSlice = createSlice({
+  name: 'tasks',
   initialState,
   reducers: {
-    addTodoTask: (state: TodoTasksState, action: PayloadAction<NewTask>) => {
+    addTask: (state: TaskState, action: PayloadAction<NewTask>) => {
       return {
         ...state,
         currentId: state.currentId + 1,
@@ -23,7 +23,7 @@ const todoTasksSlice = createSlice({
         ],
       }
     },
-    updateTodoTask: (state: TodoTasksState, action: PayloadAction<Task>) => {
+    updateTask: (state: TaskState, action: PayloadAction<Task>) => {
       const updatedTasks = state.tasks.map((task) => {
         // 指定されたidのみ更新した値を返す
         if (task.id === action.payload.id) {
@@ -42,7 +42,7 @@ const todoTasksSlice = createSlice({
         tasks: updatedTasks,
       }
     },
-    deleteTodoTask: (state: TodoTasksState, action: PayloadAction<Task>) => {
+    deleteTask: (state: TaskState, action: PayloadAction<Task>) => {
       const filterdTasks = state.tasks.filter((task) => {
         return task.id !== action.payload.id
       })
@@ -56,11 +56,7 @@ const todoTasksSlice = createSlice({
 })
 
 // Reducerのエクスポート
-export const todoTasksReducer = todoTasksSlice.reducer
+export const tasksReducer = tasksSlice.reducer
 
 // Action Creatersのエクスポート
-export const {
-  addTodoTask,
-  deleteTodoTask,
-  updateTodoTask,
-} = todoTasksSlice.actions
+export const { addTask, deleteTask, updateTask } = tasksSlice.actions

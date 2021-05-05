@@ -7,7 +7,7 @@ export interface Task extends NewTask {
   deadline?: string
 }
 
-export interface TodoTasksState {
+export interface TaskState {
   currentId: number
   tasks: Task[]
 }

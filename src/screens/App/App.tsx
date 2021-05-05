@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react'
 import { Button } from '@material-ui/core'
-import useTodoTasks from 'src/store/todoTasks/hooks'
+import useTasks from 'src/store/tasks/hooks'
 import './App.css'
 import { getFormattedDate } from 'src/utils/dateUtils'
 import { NewTask } from 'src/types/task'
@@ -10,12 +10,7 @@ import styled from 'styled-components'
 function App(): JSX.Element {
   const [inputTaskTitle, setInputTaskTitle] = useState<string>('')
 
-  const {
-    todoTasks,
-    addTodoTasks,
-    deleteTodoTasks,
-    updateTodoTasks,
-  } = useTodoTasks()
+  const { tasks, addTasks, deleteTasks, updateTasks } = useTasks()
 
   const onAddNewTask = () => {
     if (!inputTaskTitle) return
@@ -25,7 +20,7 @@ function App(): JSX.Element {
     }
 
     // 新規タスクの作成
-    addTodoTasks(newTask)
+    addTasks(newTask)
 
     // タスク作成したらinputを空にする
     setInputTaskTitle('')
@@ -58,7 +53,7 @@ function App(): JSX.Element {
           </AddTaskButton>
         </TaskInputDiv>
 
-        {todoTasks.map((task) => {
+        {tasks.map((task) => {
           return (
             <TaskDiv key={task.id}>
               <TaskCheckbox color="primary" />
@@ -72,7 +67,7 @@ function App(): JSX.Element {
                 <Button
                   variant="contained"
                   color="secondary"
-                  onClick={() => deleteTodoTasks(task)}
+                  onClick={() => deleteTasks(task)}
                 >
                   削除
                 </Button>
@@ -80,7 +75,7 @@ function App(): JSX.Element {
                 <Button
                   variant="contained"
                   onClick={() =>
-                    updateTodoTasks({
+                    updateTasks({
                       id: task.id,
                       title: task.title + ' update',
                       deadline: getFormattedDate(new Date()),
