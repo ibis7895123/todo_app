@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { TextField } from '@material-ui/core'
+import { TextField, Checkbox } from '@material-ui/core'
 
 export const TaskTextField = styled(TextField)`
   label {
@@ -12,4 +12,8 @@ export const TaskTextField = styled(TextField)`
   .MuiInput-underline::before {
     border-bottom-color: white;
   }
+`
+
+export const TaskCheckbox = styled(Checkbox)`
+  color: white;
 `

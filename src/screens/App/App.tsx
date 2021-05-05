@@ -1,10 +1,10 @@
 import React, { ChangeEvent, useState } from 'react'
-import { Button } from '@material-ui/core'
+import { Button, Checkbox } from '@material-ui/core'
 import useTodoTasks from 'src/store/todoTasks/hooks'
 import './App.css'
 import { getFormattedDate } from 'src/utils/dateUtils'
 import { NewTask } from 'src/types/task'
-import { TaskTextField } from 'src/components/Feild'
+import { TaskTextField, TaskCheckbox } from 'src/components/Feild'
 import styled from 'styled-components'
 
 function App(): JSX.Element {
@@ -56,13 +56,11 @@ function App(): JSX.Element {
           </AddTaskButton>
         </div>
 
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-
         {todoTasks.map((task) => {
           return (
             <div key={task.id}>
+              <TaskCheckbox color="primary" />
+
               <p>{task.title}</p>
               <p>期限: {task.deadline}</p>
 
@@ -95,7 +93,8 @@ function App(): JSX.Element {
 }
 
 const AddTaskButton = styled(Button)`
-  margin-top: 16px;
+  margin-top: 13px;
+  margin-left: 10px;
 `
 
 export default App
