@@ -2,12 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { NewTask, Task, TaskState } from 'src/types/task'
 
 const initialState: TaskState = {
-  currentId: 0,
+  currentId: 1,
   tasks: [],
 }
 
-const tasksSlice = createSlice({
-  name: 'tasks',
+const taskSlice = createSlice({
+  name: 'task',
   initialState,
   reducers: {
     addTask: (state: TaskState, action: PayloadAction<NewTask>) => {
@@ -16,9 +16,12 @@ const tasksSlice = createSlice({
         currentId: state.currentId + 1,
         tasks: [
           ...state.tasks,
+          // title以外は空のデータを入れる
           {
             id: state.currentId,
             title: action.payload.title,
+            deadline: '',
+            isDone: false,
           },
         ],
       }
@@ -31,6 +34,7 @@ const tasksSlice = createSlice({
             id: action.payload.id,
             title: action.payload.title,
             deadline: action.payload.deadline,
+            isDone: action.payload.isDone,
           }
         }
 
@@ -52,11 +56,36 @@ const tasksSlice = createSlice({
         tasks: filterdTasks,
       }
     },
+    toggleIsDoneTask: (state: TaskState, action: PayloadAction<Task>) => {
+      const updatedTasks = state.tasks.map((task) => {
+        // 指定されたidのみ更新した値を返す
+        if (task.id === action.payload.id) {
+          return {
+            id: action.payload.id,
+            title: action.payload.title,
+            deadline: action.payload.deadline,
+            isDone: !action.payload.isDone, // isDoneを反転させる
+          }
+        }
+
+        return task
+      })
+
+      return {
+        ...state,
+        tasks: updatedTasks,
+      }
+    },
   },
 })
 
 // Reducerのエクスポート
-export const tasksReducer = tasksSlice.reducer
+export const taskReducer = taskSlice.reducer
 
 // Action Creatersのエクスポート
-export const { addTask, deleteTask, updateTask } = tasksSlice.actions
+export const {
+  addTask,
+  deleteTask,
+  updateTask,
+  toggleIsDoneTask,
+} = taskSlice.actions

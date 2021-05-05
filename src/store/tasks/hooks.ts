@@ -1,16 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { NewTask, Task } from 'src/types/task'
-import { addTask, deleteTask, updateTask } from './slice'
+import { addTask, deleteTask, updateTask, toggleIsDoneTask } from './slice'
 
-const TasksHooks = () => {
+const TaskHooks = () => {
   const dispatch = useDispatch()
 
   return {
     tasks: useSelector((state) => state.task.tasks),
-    addTasks: (task: NewTask) => dispatch(addTask(task)),
-    deleteTasks: (task: Task) => dispatch(deleteTask(task)),
-    updateTasks: (task: Task) => dispatch(updateTask(task)),
+    addTask: (task: NewTask) => dispatch(addTask(task)),
+    deleteTask: (task: Task) => dispatch(deleteTask(task)),
+    updateTask: (task: Task) => dispatch(updateTask(task)),
+    toggleIsDoneTask: (task: Task) => dispatch(toggleIsDoneTask(task)),
   }
 }
 
-export default TasksHooks
+export default TaskHooks

@@ -10,7 +10,23 @@ import styled from 'styled-components'
 function App(): JSX.Element {
   const [inputTaskTitle, setInputTaskTitle] = useState<string>('')
 
-  const { tasks, addTasks, deleteTasks, updateTasks } = useTasks()
+  const {
+    tasks,
+    addTask,
+    deleteTask,
+    updateTask,
+    toggleIsDoneTask,
+  } = useTasks()
+
+  // todoタスク
+  const todoTasks = tasks.filter((task) => {
+    return !task.isDone
+  })
+
+  // 完了タスク
+  const doneTasks = tasks.filter((task) => {
+    return task.isDone
+  })
 
   const onAddNewTask = () => {
     if (!inputTaskTitle) return
@@ -20,14 +36,29 @@ function App(): JSX.Element {
     }
 
     // 新規タスクの作成
-    addTasks(newTask)
+    addTask(newTask)
 
     // タスク作成したらinputを空にする
     setInputTaskTitle('')
   }
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const onTextChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputTaskTitle(event.target.value)
+  }
+
+  const onCheck = (event: ChangeEvent<HTMLInputElement>) => {
+    // taskIdをvalueから取得
+    const taskId = Number(event.target.value)
+
+    if (!taskId) return
+
+    const checkTask = tasks.find((task) => {
+      return task.id === taskId
+    })
+
+    if (!checkTask) return
+
+    toggleIsDoneTask(checkTask)
   }
 
   return (
@@ -40,7 +71,7 @@ function App(): JSX.Element {
             label="タスクを入力"
             type="text"
             value={inputTaskTitle}
-            onChange={onChange}
+            onChange={onTextChange}
             // onBlur={onAddNewTask}
           />
 
@@ -53,10 +84,15 @@ function App(): JSX.Element {
           </AddTaskButton>
         </TaskInputDiv>
 
-        {tasks.map((task) => {
+        {todoTasks.map((task) => {
           return (
             <TaskDiv key={task.id}>
-              <TaskCheckbox color="primary" />
+              <TaskCheckbox
+                color="primary"
+                onChange={onCheck}
+                checked={task.isDone}
+                value={task.id} // taskIdでどれをチェックしたか特定する
+              />
 
               <TaskTextDiv>
                 <TaskTitle>{task.title}</TaskTitle>
@@ -67,7 +103,7 @@ function App(): JSX.Element {
                 <Button
                   variant="contained"
                   color="secondary"
-                  onClick={() => deleteTasks(task)}
+                  onClick={() => deleteTask(task)}
                 >
                   削除
                 </Button>
@@ -75,7 +111,7 @@ function App(): JSX.Element {
                 <Button
                   variant="contained"
                   onClick={() =>
-                    updateTasks({
+                    updateTask({
                       id: task.id,
                       title: task.title + ' update',
                       deadline: getFormattedDate(new Date()),
@@ -85,6 +121,25 @@ function App(): JSX.Element {
                   アップデート
                 </Button>
               </div> */}
+            </TaskDiv>
+          )
+        })}
+
+        <TaskDoneTitle>完了</TaskDoneTitle>
+        {doneTasks.map((task) => {
+          return (
+            <TaskDiv key={task.id}>
+              <TaskCheckbox
+                color="primary"
+                onChange={onCheck}
+                checked={task.isDone}
+                value={task.id} // taskIdでどれをチェックしたか特定する
+              />
+
+              <TaskTextDiv>
+                <TaskTitle>{task.title}</TaskTitle>
+                <TaskDeadline>期限: {task.deadline}</TaskDeadline>
+              </TaskTextDiv>
             </TaskDiv>
           )
         })}
@@ -121,6 +176,10 @@ const TaskTitle = styled.p`
 
 const TaskDeadline = styled.span`
   font-size: 12px;
+`
+
+const TaskDoneTitle = styled.h3`
+  margin-top: 50px;
 `
 
 export default App

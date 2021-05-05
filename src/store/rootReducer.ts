@@ -1,9 +1,9 @@
 import 'react-redux'
 import { combineReducers } from '@reduxjs/toolkit'
-import { tasksReducer } from 'src/store/tasks/slice'
+import { taskReducer } from 'src/store/tasks/slice'
 
 const rootReducer = combineReducers({
-  task: tasksReducer,
+  task: taskReducer,
 })
 
 export type RootState = ReturnType<typeof rootReducer>
