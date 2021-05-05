@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from 'react'
-import { Button } from '@material-ui/core'
+import { Button, TextField } from '@material-ui/core'
 import useTodoTasks from 'src/store/todoTasks/hooks'
 import './App.css'
 import { getFormattedDate } from 'src/utils/dateUtils'
@@ -37,12 +37,14 @@ function App(): JSX.Element {
     <div className="App">
       <header className="App-header">
         <div>
-          <input
+          <TextField
+            label="Standard"
             type="text"
             value={inputTaskTitle}
             onChange={onChange}
             onBlur={onAddNewTask}
           />
+
           <Button variant="contained" color="primary" onClick={onAddNewTask}>
             追加
           </Button>
