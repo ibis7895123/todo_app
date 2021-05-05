@@ -6,7 +6,7 @@ const TodoTasksContainer = () => {
   const dispatch = useDispatch()
 
   return {
-    todoTasks: useSelector((state) => state.todoTasks),
+    todoTasks: useSelector((state) => state.todoTasks.tasks),
     addTodoTasks: (task: NewTask) => dispatch(addTodoTask(task)),
     deleteTodoTasks: (task: Task) => dispatch(deleteTodoTask(task)),
     updateTodoTasks: (task: Task) => dispatch(updateTodoTask(task)),

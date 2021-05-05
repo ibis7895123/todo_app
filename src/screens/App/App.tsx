@@ -16,8 +16,6 @@ function App(): JSX.Element {
     date: new Date().toString(),
   }
 
-  console.log(typeof todoTasks)
-
   return (
     <div className="App">
       <header className="App-header">
@@ -31,6 +29,14 @@ function App(): JSX.Element {
               <p>{task.id}</p>
               <p>{task.title}</p>
               <p>{task.date}</p>
+
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => deleteTodoTasks(task)}
+              >
+                削除
+              </Button>
             </div>
           )
         })}
@@ -40,7 +46,7 @@ function App(): JSX.Element {
           color="primary"
           onClick={() => addTodoTasks(newTask)}
         >
-          up
+          新規作成
         </Button>
       </header>
     </div>

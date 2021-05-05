@@ -1,37 +1,51 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { NewTask, Task } from '../../types/task'
+import { NewTask, Task, TodoTasksState } from '../../types/task'
 
-const initialState: Task[] = []
+const initialState: TodoTasksState = {
+  currentId: 0,
+  tasks: [],
+}
 
 const todoTasksSlice = createSlice({
   name: 'todoTasks',
   initialState,
   reducers: {
-    addTodoTask: (state: Task[], action: PayloadAction<NewTask>) => {
-      return [
+    addTodoTask: (state: TodoTasksState, action: PayloadAction<NewTask>) => {
+      return {
         ...state,
-        {
-          id: state.length + 1,
-          title: action.payload.title,
-          date: action.payload.date,
-        },
-      ]
+        currentId: state.currentId + 1,
+        tasks: [
+          ...state.tasks,
+          {
+            id: state.currentId,
+            title: action.payload.title,
+            date: action.payload.date,
+          },
+        ],
+      }
     },
-    updateTodoTask: (state: Task[], action: PayloadAction<Task>) => {
-      state[action.payload.id] = {
+    updateTodoTask: (state: TodoTasksState, action: PayloadAction<Task>) => {
+      const updatedTasks = state.tasks
+      updatedTasks[action.payload.id] = {
         id: action.payload.id,
         title: action.payload.title,
         date: action.payload.date,
       }
 
-      return state
+      return {
+        ...state,
+        tasks: updatedTasks,
+      }
     },
-    deleteTodoTask: (state: Task[], action: PayloadAction<Task>) => {
-      const filterdState = state.filter((task) => {
+    deleteTodoTask: (state: TodoTasksState, action: PayloadAction<Task>) => {
+      const filterdTasks = state.tasks.filter((task) => {
         return task.id !== action.payload.id
       })
 
-      return filterdState
+      return {
+        ...state,
+        tasks: filterdTasks,
+      }
     },
   },
 })

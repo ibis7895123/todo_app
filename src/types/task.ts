@@ -6,3 +6,8 @@ export interface NewTask {
 export interface Task extends NewTask {
   id: number
 }
+
+export interface TodoTasksState {
+  currentId: number
+  tasks: Task[]
+}
