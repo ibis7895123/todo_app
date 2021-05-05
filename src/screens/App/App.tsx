@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from 'react'
-import { Button, Checkbox } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import useTodoTasks from 'src/store/todoTasks/hooks'
 import './App.css'
 import { getFormattedDate } from 'src/utils/dateUtils'
@@ -38,7 +38,9 @@ function App(): JSX.Element {
   return (
     <div className="App">
       <header className="App-header">
-        <div>
+        <h2>タスク</h2>
+
+        <TaskInputDiv>
           <TaskTextField
             label="タスクを入力"
             type="text"
@@ -54,37 +56,41 @@ function App(): JSX.Element {
           >
             追加
           </AddTaskButton>
-        </div>
+        </TaskInputDiv>
 
         {todoTasks.map((task) => {
           return (
-            <div key={task.id}>
+            <TaskDiv key={task.id}>
               <TaskCheckbox color="primary" />
 
-              <p>{task.title}</p>
-              <p>期限: {task.deadline}</p>
+              <TaskTextDiv>
+                <TaskTitle>{task.title}</TaskTitle>
+                <TaskDeadline>期限: {task.deadline}</TaskDeadline>
+              </TaskTextDiv>
 
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => deleteTodoTasks(task)}
-              >
-                削除
-              </Button>
+              {/* <div>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => deleteTodoTasks(task)}
+                >
+                  削除
+                </Button>
 
-              <Button
-                variant="contained"
-                onClick={() =>
-                  updateTodoTasks({
-                    id: task.id,
-                    title: task.title + ' update',
-                    deadline: getFormattedDate(new Date()),
-                  })
-                }
-              >
-                アップデート
-              </Button>
-            </div>
+                <Button
+                  variant="contained"
+                  onClick={() =>
+                    updateTodoTasks({
+                      id: task.id,
+                      title: task.title + ' update',
+                      deadline: getFormattedDate(new Date()),
+                    })
+                  }
+                >
+                  アップデート
+                </Button>
+              </div> */}
+            </TaskDiv>
           )
         })}
       </header>
@@ -92,9 +98,34 @@ function App(): JSX.Element {
   )
 }
 
+const TaskInputDiv = styled.div`
+  padding: 0 0 20px;
+`
+
 const AddTaskButton = styled(Button)`
   margin-top: 13px;
   margin-left: 10px;
+`
+
+const TaskDiv = styled.div`
+  display: flex;
+  width: 100%;
+  align-self: flex-start;
+  padding: 15px 0px 15px;
+  border-bottom: 1px solid white;
+`
+
+const TaskTextDiv = styled.div`
+  text-align: left;
+  padding-left: 10px;
+`
+
+const TaskTitle = styled.p`
+  margin: 0 0 5px;
+`
+
+const TaskDeadline = styled.span`
+  font-size: 12px;
 `
 
 export default App
