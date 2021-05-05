@@ -13,7 +13,7 @@ function App(): JSX.Element {
 
   const newTask = {
     title: 'テスト',
-    date: new Date().toString(),
+    deadline: new Date().toString(),
   }
 
   return (
@@ -28,7 +28,7 @@ function App(): JSX.Element {
             <div key={task.id}>
               <p>{task.id}</p>
               <p>{task.title}</p>
-              <p>{task.date}</p>
+              <p>{task.deadline}</p>
 
               <Button
                 variant="contained"
@@ -44,7 +44,7 @@ function App(): JSX.Element {
                   updateTodoTasks({
                     id: task.id,
                     title: 'テスト アップデート',
-                    date: new Date().toString(),
+                    deadline: new Date().toString(),
                   })
                 }
               >

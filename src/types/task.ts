@@ -1,6 +1,6 @@
 export interface NewTask {
   title: string
-  date: string
+  deadline: string
 }
 
 export interface Task extends NewTask {

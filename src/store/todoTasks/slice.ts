@@ -19,7 +19,7 @@ const todoTasksSlice = createSlice({
           {
             id: state.currentId,
             title: action.payload.title,
-            date: action.payload.date,
+            deadline: action.payload.deadline,
           },
         ],
       }
@@ -31,7 +31,7 @@ const todoTasksSlice = createSlice({
           return {
             id: action.payload.id,
             title: action.payload.title,
-            date: action.payload.date,
+            deadline: action.payload.deadline,
           }
         }
 
