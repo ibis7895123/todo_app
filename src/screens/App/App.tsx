@@ -1,9 +1,11 @@
 import React, { ChangeEvent, useState } from 'react'
-import { Button, TextField } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import useTodoTasks from 'src/store/todoTasks/hooks'
 import './App.css'
 import { getFormattedDate } from 'src/utils/dateUtils'
 import { NewTask } from 'src/types/task'
+import { TaskTextField } from 'src/components/Feild'
+import styled from 'styled-components'
 
 function App(): JSX.Element {
   const [inputTaskTitle, setInputTaskTitle] = useState<string>('')
@@ -37,17 +39,21 @@ function App(): JSX.Element {
     <div className="App">
       <header className="App-header">
         <div>
-          <TextField
-            label="Standard"
+          <TaskTextField
+            label="タスクを入力"
             type="text"
             value={inputTaskTitle}
             onChange={onChange}
-            onBlur={onAddNewTask}
+            // onBlur={onAddNewTask}
           />
 
-          <Button variant="contained" color="primary" onClick={onAddNewTask}>
+          <AddTaskButton
+            variant="contained"
+            color="primary"
+            onClick={onAddNewTask}
+          >
             追加
-          </Button>
+          </AddTaskButton>
         </div>
 
         <p>
@@ -87,5 +93,9 @@ function App(): JSX.Element {
     </div>
   )
 }
+
+const AddTaskButton = styled(Button)`
+  margin-top: 16px;
+`
 
 export default App

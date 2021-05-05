@@ -5,11 +5,14 @@ import App from './screens/App/App'
 import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
 import store from './store/rootStore'
+import { StylesProvider } from '@material-ui/styles'
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <StylesProvider injectFirst>
+        <App />
+      </StylesProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'),
