@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button } from '@material-ui/core'
+import { Button, Dialog } from '@material-ui/core'
 import styled from 'styled-components'
 import useTasks from 'src/store/tasks/hooks'
 import { NewTask } from 'src/types/task'
@@ -9,6 +9,7 @@ import './App.css'
 
 function App(): JSX.Element {
   const [inputTaskTitle, setInputTaskTitle] = useState<string>('')
+  const [modalVisible, setModalVisible] = useState<boolean>(false)
 
   const {
     tasks,
@@ -61,9 +62,22 @@ function App(): JSX.Element {
     toggleIsDoneTask(checkTask)
   }
 
+  const onClickItem = (event: React.MouseEvent<HTMLDivElement>) => {
+    console.log(event)
+    setModalVisible(true)
+  }
+
+  const modalClose = () => {
+    setModalVisible(false)
+  }
+
   return (
     <div className="App">
       <header className="App-header">
+        <Dialog open={modalVisible} onClose={modalClose}>
+          テスト
+        </Dialog>
+
         <h2>タスク</h2>
 
         <TaskInputDiv>
@@ -85,13 +99,27 @@ function App(): JSX.Element {
         </TaskInputDiv>
 
         {todoTasks.map((task) => {
-          return <TaskListItem key={task.id} task={task} onCheck={onCheck} />
+          return (
+            <TaskListItem
+              key={task.id}
+              task={task}
+              onCheck={onCheck}
+              onClickItem={onClickItem}
+            />
+          )
         })}
 
         <TaskDoneTitle>完了</TaskDoneTitle>
 
         {doneTasks.map((task) => {
-          return <TaskListItem key={task.id} task={task} onCheck={onCheck} />
+          return (
+            <TaskListItem
+              key={task.id}
+              task={task}
+              onCheck={onCheck}
+              onClickItem={onClickItem}
+            />
+          )
         })}
       </header>
     </div>

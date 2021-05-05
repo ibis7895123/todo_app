@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { TaskCheckbox } from 'src/components/materialUi'
 
 export const TaskListItem = (props: TaskListItemProps): JSX.Element => {
-  const { task, onCheck } = props
+  const { task, onCheck, onClickItem } = props
 
   return (
     <TaskDiv>
@@ -15,7 +15,7 @@ export const TaskListItem = (props: TaskListItemProps): JSX.Element => {
         value={task.id} // taskIdでどれをチェックしたか特定する
       />
 
-      <TaskTextDiv onClick={() => console.log('click')}>
+      <TaskTextDiv onClick={onClickItem}>
         <TaskTitle>{task.title}</TaskTitle>
         <TaskDeadline>期限: {task.deadline}</TaskDeadline>
       </TaskTextDiv>
