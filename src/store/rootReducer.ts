@@ -1,7 +1,9 @@
+import 'react-redux'
 import { combineReducers } from '@reduxjs/toolkit'
+import { todoTasksReducer } from './todoTasks/slice'
 
 const rootReducer = combineReducers({
-  // todos: null,
+  todoTasks: todoTasksReducer,
 })
 
 export type RootState = ReturnType<typeof rootReducer>
