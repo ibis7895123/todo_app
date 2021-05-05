@@ -4,7 +4,7 @@ import useTodoTasks from 'src/store/todoTasks/hooks'
 import './App.css'
 import { getFormattedDate } from 'src/utils/dateUtils'
 import { NewTask } from 'src/types/task'
-import { TaskTextField, TaskCheckbox } from 'src/components/Feild'
+import { TaskTextField, TaskCheckbox } from 'src/components/material-ui'
 import styled from 'styled-components'
 
 function App(): JSX.Element {
