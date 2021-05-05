@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
+import useTodoTasks from 'src/store/todoTasks/hooks'
 import './App.css'
-import useTodoTasks from '../../store/todoTasks/useTodoTasks'
 
 function App(): JSX.Element {
   const {

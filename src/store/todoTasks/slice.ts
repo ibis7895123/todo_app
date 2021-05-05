@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { NewTask, Task, TodoTasksState } from '../../types/task'
+import { NewTask, Task, TodoTasksState } from 'src/types/task'
 
 const initialState: TodoTasksState = {
   currentId: 0,

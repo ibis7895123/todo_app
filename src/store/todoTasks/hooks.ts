@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { NewTask, Task } from '../../types/task'
+import { NewTask, Task } from 'src/types/task'
 import { addTodoTask, deleteTodoTask, updateTodoTask } from './slice'
 
-const TodoTasksContainer = () => {
+const TodoTasksHooks = () => {
   const dispatch = useDispatch()
 
   return {
@@ -13,4 +13,4 @@ const TodoTasksContainer = () => {
   }
 }
 
-export default TodoTasksContainer
+export default TodoTasksHooks
