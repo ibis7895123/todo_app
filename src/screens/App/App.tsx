@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { Button } from '@material-ui/core'
 import useTodoTasks from 'src/store/todoTasks/hooks'
 import './App.css'
 import { getFormattedDate } from 'src/utils/dateUtils'
+import { NewTask } from 'src/types/task'
 
 function App(): JSX.Element {
+  const [inputTaskTitle, setInputTaskTitle] = useState<string>('')
+
   const {
     todoTasks,
     addTodoTasks,
@@ -12,21 +15,38 @@ function App(): JSX.Element {
     updateTodoTasks,
   } = useTodoTasks()
 
-  const newTask = {
-    title: 'テスト',
-    deadline: getFormattedDate(new Date()),
+  const onAddNewTask = () => {
+    if (!inputTaskTitle) return
+
+    const newTask: NewTask = {
+      title: inputTaskTitle,
+    }
+
+    // 新規タスクの作成
+    addTodoTasks(newTask)
+
+    // タスク作成したらinputを空にする
+    setInputTaskTitle('')
+  }
+
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputTaskTitle(event.target.value)
   }
 
   return (
     <div className="App">
       <header className="App-header">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => addTodoTasks(newTask)}
-        >
-          新規作成
-        </Button>
+        <div>
+          <input
+            type="text"
+            value={inputTaskTitle}
+            onChange={onChange}
+            onBlur={onAddNewTask}
+          />
+          <Button variant="contained" color="primary" onClick={onAddNewTask}>
+            追加
+          </Button>
+        </div>
 
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
@@ -51,7 +71,7 @@ function App(): JSX.Element {
                 onClick={() =>
                   updateTodoTasks({
                     id: task.id,
-                    title: 'テスト アップデート',
+                    title: task.title + ' update',
                     deadline: getFormattedDate(new Date()),
                   })
                 }

@@ -19,7 +19,6 @@ const todoTasksSlice = createSlice({
           {
             id: state.currentId,
             title: action.payload.title,
-            deadline: action.payload.deadline,
           },
         ],
       }
