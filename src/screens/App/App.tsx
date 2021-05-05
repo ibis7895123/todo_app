@@ -9,7 +9,7 @@ import './App.css'
 
 function App(): JSX.Element {
   const [inputTaskTitle, setInputTaskTitle] = useState<string>('')
-  const [modalVisible, setModalVisible] = useState<boolean>(false)
+  const [dialogVisible, setDialogVisible] = useState<boolean>(false)
 
   const {
     tasks,
@@ -64,17 +64,17 @@ function App(): JSX.Element {
 
   const onClickItem = (event: React.MouseEvent<HTMLDivElement>) => {
     console.log(event)
-    setModalVisible(true)
+    setDialogVisible(true)
   }
 
-  const modalClose = () => {
-    setModalVisible(false)
+  const dialogClose = () => {
+    setDialogVisible(false)
   }
 
   return (
     <div className="App">
       <header className="App-header">
-        <Dialog open={modalVisible} onClose={modalClose}>
+        <Dialog open={dialogVisible} onClose={dialogClose}>
           テスト
         </Dialog>
 
