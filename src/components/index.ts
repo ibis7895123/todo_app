@@ -1,3 +1,4 @@
-export * from './materialUi'
-export * from './taskListItem'
-export * from './taskEditDialog'
+export * from './MaterialUi'
+export * from './TaskListItem'
+export * from './TaskEditDialog'
+export * from './DeleteConfirmDialog'

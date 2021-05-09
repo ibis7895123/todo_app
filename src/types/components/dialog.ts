@@ -6,3 +6,10 @@ export interface TaskEditDialogProps {
   dialogClose: () => void
   onCheck: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
+
+export interface DeleteConfirmDialogProps {
+  task: Task
+  isVisible: boolean
+  dialogClose: () => void
+  onDelete: () => void
+}
