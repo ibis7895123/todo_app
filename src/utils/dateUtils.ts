@@ -10,7 +10,7 @@ enum dayOfWeekList {
 
 export const getFormattedDate = (date: Date) => {
   const year = date.getFullYear()
-  const month = date.getMonth()
+  const month = date.getMonth() + 1
   const day = date.getDate()
   const dayOfWeek = dayOfWeekList[date.getDay()]
 
@@ -23,7 +23,7 @@ export const getTextFieldValueDate = (date: Date | null) => {
   if (!date) return ''
 
   const year = date.getFullYear()
-  const month = date.getMonth()
+  const month = date.getMonth() + 1
   const day = date.getDate()
 
   // 必ず2桁になるように0埋め
@@ -32,6 +32,8 @@ export const getTextFieldValueDate = (date: Date | null) => {
 
   const formattedDate = `${year}-${padding_month}-${padding_day}`
 
+  console.log(formattedDate)
+
   return formattedDate
 }
 
@@ -39,18 +41,30 @@ export const isToday = (date: Date | null) => {
   if (!date) return false
 
   const year = date.getFullYear()
-  const month = date.getMonth()
+  const month = date.getMonth() + 1
   const day = date.getDate()
 
   const today = new Date()
 
   if (
     year === today.getFullYear() &&
-    month === today.getMonth() &&
+    month === today.getMonth() + 1 &&
     day === today.getDate()
   ) {
     return true
   }
+
+  return false
+}
+
+export const isExpired = (date: Date | null) => {
+  if (!date) return false
+
+  // 今日の予定は期限切れにしない
+  if (isToday(date)) return false
+
+  // 期限切れの場合
+  if (date.getTime() < new Date().getTime()) return true
 
   return false
 }

@@ -2,10 +2,14 @@ import React from 'react'
 import { TaskListItemProps } from 'src/types/components/taskListItem'
 import styled from 'styled-components'
 import { TaskCheckbox } from 'src/components/materialUi'
-import { getFormattedDate, isToday } from 'src/utils/dateUtils'
+import { getFormattedDate, isExpired, isToday } from 'src/utils/dateUtils'
 
 export const TaskListItem = (props: TaskListItemProps): JSX.Element => {
   const { task, onCheck, onClickItem } = props
+
+  const deadlinePrefix = isExpired(new Date(task.deadline))
+    ? '期限切れ: '
+    : '期限: '
 
   return (
     <TaskDiv>
@@ -24,10 +28,16 @@ export const TaskListItem = (props: TaskListItemProps): JSX.Element => {
         </TaskTitle>
 
         {task.deadline && (
-          <TaskDeadline>
+          <TaskDeadline
+            style={
+              isExpired(new Date(task.deadline)) && !task.isDone
+                ? { color: 'red' }
+                : {}
+            }
+          >
             {isToday(new Date(task.deadline))
               ? '今日の予定'
-              : `期限: ${getFormattedDate(new Date(task.deadline))}`}
+              : deadlinePrefix + getFormattedDate(new Date(task.deadline))}
           </TaskDeadline>
         )}
       </TaskTextDiv>
