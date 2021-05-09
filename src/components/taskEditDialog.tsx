@@ -50,8 +50,8 @@ export const TaskEditDialog = (props: TaskEditDialogProps): JSX.Element => {
 
   return (
     <TaskDialog open={isVisible} onClose={dialogClose}>
-      <DialogContainerDiv>
-        <div>
+      <ContainerDiv>
+        <InputDiv>
           <Checkbox
             color="primary"
             onChange={onCheck}
@@ -66,9 +66,9 @@ export const TaskEditDialog = (props: TaskEditDialogProps): JSX.Element => {
             onChange={(event) => setUpdateTitle(event.target.value)}
             onBlur={() => onUpdateTaskTitle(task)}
           />
-        </div>
+        </InputDiv>
 
-        <div>
+        <ButtonsDiv>
           {isToday(new Date(task.deadline)) ? (
             <Button
               color="secondary"
@@ -90,7 +90,7 @@ export const TaskEditDialog = (props: TaskEditDialogProps): JSX.Element => {
             </Button>
           )}
 
-          <Button color="primary">期限日の追加</Button>
+          <DeadlineText>期限日の追加:</DeadlineText>
           <TextField
             type="date"
             value={getTextFieldValueDate(new Date(task.deadline))}
@@ -101,7 +101,7 @@ export const TaskEditDialog = (props: TaskEditDialogProps): JSX.Element => {
               })
             }
           />
-        </div>
+        </ButtonsDiv>
 
         <p>メモ</p>
 
@@ -112,7 +112,7 @@ export const TaskEditDialog = (props: TaskEditDialogProps): JSX.Element => {
         >
           削除
         </Button>
-      </DialogContainerDiv>
+      </ContainerDiv>
     </TaskDialog>
   )
 }
@@ -130,7 +130,27 @@ const TaskDialog = styled(Dialog)`
   }
 `
 
-const DialogContainerDiv = styled.div`
+const ContainerDiv = styled.div`
   padding: 30px;
   height: 100%;
+`
+
+const InputDiv = styled.div`
+  margin-left: -10px;
+`
+
+const DeadlineText = styled.p`
+  margin: unset;
+  margin-top: 15px;
+  font-size: 12px;
+`
+
+const ButtonsDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 20px;
+  button {
+    padding: unset;
+  }
 `
