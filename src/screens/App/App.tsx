@@ -45,14 +45,28 @@ function App(): JSX.Element {
     setNewTaskTitle('')
   }
 
-  const onUpdateTask = (task: Task) => {
-    console.log(event)
-
+  const onUpdateTaskTitle = (task: Task) => {
     if (!editTaskTitle) return
 
     const updatedTask: Task = {
       ...task,
       title: editTaskTitle,
+    }
+
+    // 新規タスクの作成
+    updateTask(updatedTask)
+  }
+
+  const onUpdateTaskDeadline = ({
+    task,
+    deadline,
+  }: {
+    task: Task
+    deadline: string
+  }) => {
+    const updatedTask: Task = {
+      ...task,
+      deadline: deadline,
     }
 
     // 新規タスクの作成
@@ -87,7 +101,6 @@ function App(): JSX.Element {
   const onClickItem = (task: Task) => {
     // 編集するタイトルをセット
     setEditTaskTitle(task.title)
-
     setDialogVisible(true)
   }
 
@@ -106,7 +119,6 @@ function App(): JSX.Element {
             type="text"
             value={newTaskTitle}
             onChange={onNewTaskTitleChange}
-            // onBlur={onAddNewTask}
           />
 
           <AddTaskButton
@@ -128,11 +140,22 @@ function App(): JSX.Element {
                     type="text"
                     value={editTaskTitle}
                     onChange={onEditTaskTitleChange}
-                    onBlur={() => onUpdateTask(task)}
+                    onBlur={() => onUpdateTaskTitle(task)}
                   />
 
                   <div>
-                    <Button color="primary">今日の予定に追加</Button>
+                    <Button
+                      color="primary"
+                      onClick={() =>
+                        onUpdateTaskDeadline({
+                          task,
+                          deadline: getFormattedDate(new Date()),
+                        })
+                      }
+                    >
+                      今日の予定に追加
+                    </Button>
+
                     <Button color="primary">期限日の追加</Button>
                   </div>
 
