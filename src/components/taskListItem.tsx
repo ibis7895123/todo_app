@@ -2,7 +2,7 @@ import React from 'react'
 import { TaskListItemProps } from 'src/types/components/taskListItem'
 import styled from 'styled-components'
 import { TaskCheckbox } from 'src/components/materialUi'
-import { getFormattedDate } from 'src/utils/dateUtils'
+import { getFormattedDate, isToday } from 'src/utils/dateUtils'
 
 export const TaskListItem = (props: TaskListItemProps): JSX.Element => {
   const { task, onCheck, onClickItem } = props
@@ -21,9 +21,9 @@ export const TaskListItem = (props: TaskListItemProps): JSX.Element => {
 
         {task.deadline && (
           <TaskDeadline>
-            {task.deadline === getFormattedDate(new Date())
+            {isToday(task.deadline)
               ? '今日の予定'
-              : `期限: ${task.deadline}`}
+              : `期限: ${getFormattedDate(task.deadline)}`}
           </TaskDeadline>
         )}
       </TaskTextDiv>

@@ -4,7 +4,7 @@ export interface NewTask {
 
 export interface Task extends NewTask {
   id: number
-  deadline: string
+  deadline: Date | null
   isDone: boolean
 }
 

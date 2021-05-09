@@ -6,14 +6,14 @@ import { NewTask, Task } from 'src/types/task'
 import { TaskTextField } from 'src/components/materialUi'
 import { TaskListItem } from 'src/components/taskListItem'
 import './App.css'
-import { getFormattedDate } from 'src/utils/dateUtils'
+import { getTextFieldValueDate, isToday } from 'src/utils/dateUtils'
 
 function App(): JSX.Element {
   const [newTaskTitle, setNewTaskTitle] = useState<string>('')
   const [editTask, setEditTask] = useState<Task>({
     id: 0,
     title: '',
-    deadline: '',
+    deadline: new Date(),
     isDone: false,
   })
   const [dialogVisible, setDialogVisible] = useState<boolean>(false)
@@ -62,7 +62,7 @@ function App(): JSX.Element {
     deadline,
   }: {
     task: Task
-    deadline: string
+    deadline: Date | null
   }) => {
     const updatedTask: Task = {
       ...task,
@@ -85,6 +85,17 @@ function App(): JSX.Element {
       ...editTask,
       title: event.target.value,
     })
+  }
+
+  const onDeadlineChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const updateDeadline = new Date(event.target.value)
+
+    setEditTask({
+      ...editTask,
+      deadline: updateDeadline,
+    })
+
+    console.log({ updateDeadline, date: editTask.deadline })
   }
 
   const onCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,13 +154,13 @@ function App(): JSX.Element {
             </div>
 
             <div>
-              {editTask.deadline === getFormattedDate(new Date()) ? (
+              {isToday(editTask.deadline) ? (
                 <Button
                   color="secondary"
                   onClick={() =>
                     onUpdateTaskDeadline({
                       task: editTask,
-                      deadline: '',
+                      deadline: null,
                     })
                   }
                 >
@@ -161,7 +172,7 @@ function App(): JSX.Element {
                   onClick={() =>
                     onUpdateTaskDeadline({
                       task: editTask,
-                      deadline: getFormattedDate(new Date()),
+                      deadline: new Date(),
                     })
                   }
                 >
@@ -170,6 +181,11 @@ function App(): JSX.Element {
               )}
 
               <Button color="primary">期限日の追加</Button>
+              <TextField
+                type="date"
+                value={getTextFieldValueDate(editTask.deadline)}
+                onChange={onDeadlineChange}
+              />
             </div>
 
             <p>メモ</p>

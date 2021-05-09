@@ -20,7 +20,7 @@ const taskSlice = createSlice({
           {
             id: state.currentId,
             title: action.payload.title,
-            deadline: '',
+            deadline: null,
             isDone: false,
           },
         ],
