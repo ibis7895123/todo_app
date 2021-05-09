@@ -32,8 +32,6 @@ export const getTextFieldValueDate = (date: Date | null) => {
 
   const formattedDate = `${year}-${padding_month}-${padding_day}`
 
-  console.log(formattedDate)
-
   return formattedDate
 }
 
