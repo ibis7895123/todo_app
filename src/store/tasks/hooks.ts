@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { NewTask, Task } from 'src/types/task'
-import { addTask, deleteTask, updateTask, toggleIsDoneTask } from './slice'
+import { addTask, deleteTask, updateTask } from './slice'
 
 const TaskHooks = () => {
   const dispatch = useDispatch()
@@ -10,7 +10,6 @@ const TaskHooks = () => {
     addTask: (task: NewTask) => dispatch(addTask(task)),
     deleteTask: (task: Task) => dispatch(deleteTask(task)),
     updateTask: (task: Task) => dispatch(updateTask(task)),
-    toggleIsDoneTask: (task: Task) => dispatch(toggleIsDoneTask(task)),
   }
 }
 
