@@ -138,7 +138,7 @@ function App(): JSX.Element {
 }
 
 const TaskInputDiv = styled.div`
-  padding: 0 0 20px;
+  padding: 0 0 30px;
 `
 
 const AddTaskButton = styled(Button)`
@@ -147,7 +147,7 @@ const AddTaskButton = styled(Button)`
 `
 
 const TaskDoneTitle = styled.h3`
-  margin-top: 50px;
+  margin-top: 70px;
 `
 
 export default App
