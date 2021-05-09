@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Dialog, TextField } from '@material-ui/core'
+import { Button, Checkbox, Dialog, TextField } from '@material-ui/core'
 import styled from 'styled-components'
 import useTasks from 'src/store/tasks/hooks'
 import { NewTask, Task } from 'src/types/task'
@@ -10,16 +10,15 @@ import { getFormattedDate } from 'src/utils/dateUtils'
 
 function App(): JSX.Element {
   const [newTaskTitle, setNewTaskTitle] = useState<string>('')
-  const [editTaskTitle, setEditTaskTitle] = useState<string>('')
+  const [editTask, setEditTask] = useState<Task>({
+    id: 0,
+    title: '',
+    deadline: '',
+    isDone: false,
+  })
   const [dialogVisible, setDialogVisible] = useState<boolean>(false)
 
-  const {
-    tasks,
-    addTask,
-    deleteTask,
-    updateTask,
-    toggleIsDoneTask,
-  } = useTasks()
+  const { tasks, addTask, deleteTask, updateTask } = useTasks()
 
   // todoタスク
   const todoTasks = tasks.filter((task) => {
@@ -46,15 +45,16 @@ function App(): JSX.Element {
   }
 
   const onUpdateTaskTitle = (task: Task) => {
-    if (!editTaskTitle) return
+    if (!editTask) return
 
     const updatedTask: Task = {
       ...task,
-      title: editTaskTitle,
+      title: editTask.title,
     }
 
     // 新規タスクの作成
     updateTask(updatedTask)
+    setEditTask(updatedTask)
   }
 
   const onUpdateTaskDeadline = ({
@@ -69,8 +69,9 @@ function App(): JSX.Element {
       deadline: deadline,
     }
 
-    // 新規タスクの作成
+    // タスクのアップデート
     updateTask(updatedTask)
+    setEditTask(updatedTask)
   }
 
   const onNewTaskTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +81,10 @@ function App(): JSX.Element {
   const onEditTaskTitleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setEditTaskTitle(event.target.value)
+    setEditTask({
+      ...editTask,
+      title: event.target.value,
+    })
   }
 
   const onCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,18 +93,26 @@ function App(): JSX.Element {
 
     if (!taskId) return
 
-    const checkTask = tasks.find((task) => {
+    let checkTask = tasks.find((task) => {
       return task.id === taskId
     })
 
     if (!checkTask) return
 
-    toggleIsDoneTask(checkTask)
+    // 完了状態を反転
+    checkTask = {
+      ...checkTask,
+      isDone: !checkTask.isDone,
+    }
+
+    // 新規タスクの作成
+    updateTask(checkTask)
+    setEditTask(checkTask)
   }
 
   const onClickItem = (task: Task) => {
-    // 編集するタイトルをセット
-    setEditTaskTitle(task.title)
+    // 編集するタスクをセット
+    setEditTask(task)
     setDialogVisible(true)
   }
 
@@ -111,6 +123,67 @@ function App(): JSX.Element {
   return (
     <div className="App">
       <header className="App-header">
+        <TaskDialog open={dialogVisible} onClose={dialogClose}>
+          <DialogContainerDiv>
+            <div>
+              <Checkbox
+                color="primary"
+                onChange={onCheck}
+                checked={editTask.isDone}
+                value={editTask.id} // taskIdでどれをチェックしたか特定する
+              />
+
+              <TextField
+                label="タスクを編集"
+                type="text"
+                value={editTask.title}
+                onChange={onEditTaskTitleChange}
+                onBlur={() => onUpdateTaskTitle(editTask)}
+              />
+            </div>
+
+            <div>
+              {editTask.deadline === getFormattedDate(new Date()) ? (
+                <Button
+                  color="secondary"
+                  onClick={() =>
+                    onUpdateTaskDeadline({
+                      task: editTask,
+                      deadline: '',
+                    })
+                  }
+                >
+                  今日の予定から削除
+                </Button>
+              ) : (
+                <Button
+                  color="primary"
+                  onClick={() =>
+                    onUpdateTaskDeadline({
+                      task: editTask,
+                      deadline: getFormattedDate(new Date()),
+                    })
+                  }
+                >
+                  今日の予定に追加
+                </Button>
+              )}
+
+              <Button color="primary">期限日の追加</Button>
+            </div>
+
+            <p>メモ</p>
+
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => deleteTask(editTask)}
+            >
+              削除
+            </Button>
+          </DialogContainerDiv>
+        </TaskDialog>
+
         <h2>タスク</h2>
 
         <TaskInputDiv>
@@ -132,65 +205,12 @@ function App(): JSX.Element {
 
         {todoTasks.map((task) => {
           return (
-            <div key={task.id}>
-              <TaskDialog open={dialogVisible} onClose={dialogClose}>
-                <DialogContainerDiv>
-                  <TextField
-                    label="タスクを編集"
-                    type="text"
-                    value={editTaskTitle}
-                    onChange={onEditTaskTitleChange}
-                    onBlur={() => onUpdateTaskTitle(task)}
-                  />
-
-                  <div>
-                    {task.deadline === getFormattedDate(new Date()) ? (
-                      <Button
-                        color="secondary"
-                        onClick={() =>
-                          onUpdateTaskDeadline({
-                            task,
-                            deadline: '',
-                          })
-                        }
-                      >
-                        今日の予定から削除
-                      </Button>
-                    ) : (
-                      <Button
-                        color="primary"
-                        onClick={() =>
-                          onUpdateTaskDeadline({
-                            task,
-                            deadline: getFormattedDate(new Date()),
-                          })
-                        }
-                      >
-                        今日の予定に追加
-                      </Button>
-                    )}
-
-                    <Button color="primary">期限日の追加</Button>
-                  </div>
-
-                  <p>メモ</p>
-
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => deleteTask(task)}
-                  >
-                    削除
-                  </Button>
-                </DialogContainerDiv>
-              </TaskDialog>
-
-              <TaskListItem
-                task={task}
-                onCheck={onCheck}
-                onClickItem={() => onClickItem(task)}
-              />
-            </div>
+            <TaskListItem
+              key={task.id}
+              task={task}
+              onCheck={onCheck}
+              onClickItem={() => onClickItem(task)}
+            />
           )
         })}
 
@@ -202,7 +222,7 @@ function App(): JSX.Element {
               key={task.id}
               task={task}
               onCheck={onCheck}
-              onClickItem={onClickItem}
+              onClickItem={() => onClickItem(task)}
             />
           )
         })}
