@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { TaskEditDialogProps } from 'src/types/components/taskEditDialog'
+import { TaskEditDialogProps } from 'src/types/components/dialog'
 import styled from 'styled-components'
-import { Button, Checkbox, Dialog, TextField } from '@material-ui/core'
+import { Button, Checkbox, TextField, Dialog } from '@material-ui/core'
 import { getTextFieldValueDate, isToday } from 'src/utils/dateUtils'
 import useTasks from 'src/store/tasks/hooks'
 import { Task } from 'src/types/task'
+import { DeleteConfirmDialog } from 'src/components/DeleteConfirmDialog'
 
 export const TaskEditDialog = (props: TaskEditDialogProps): JSX.Element => {
   const { initialTask, isVisible, dialogClose, onCheck } = props
+
   const { tasks, deleteTask, updateTask } = useTasks()
+
   const [updateTitle, setUpdateTitle] = useState<string>(initialTask.title)
   const [updateMemo, setUpdateMemo] = useState<string>(initialTask.memo)
+  const [
+    deleteConfirmDialogVisible,
+    setDeleteConfirmDialogVisible,
+  ] = useState<boolean>(false)
 
   // initialTaskのidでreduxのtasksを検索する(更新検知のため)
   const task = tasks.find((task) => {
@@ -133,10 +140,21 @@ export const TaskEditDialog = (props: TaskEditDialogProps): JSX.Element => {
           <Button
             variant="contained"
             color="secondary"
-            onClick={() => deleteTask(task)}
+            onClick={() => {
+              setDeleteConfirmDialogVisible(true)
+            }}
           >
             削除
           </Button>
+
+          <DeleteConfirmDialog
+            task={task}
+            isVisible={deleteConfirmDialogVisible}
+            dialogClose={() => {
+              setDeleteConfirmDialogVisible(false)
+            }}
+            onDelete={() => deleteTask(task)}
+          />
         </DeleteButtonDiv>
       </ContainerDiv>
     </TaskDialog>
