@@ -26,7 +26,11 @@ export const getTextFieldValueDate = (date: Date | null) => {
   const month = date.getMonth()
   const day = date.getDate()
 
-  const formattedDate = `${year}-${month}-${day}`
+  // 必ず2桁になるように0埋め
+  const padding_month = ('00' + month).slice(-2)
+  const padding_day = ('00' + day).slice(-2)
+
+  const formattedDate = `${year}-${padding_month}-${padding_day}`
 
   return formattedDate
 }
