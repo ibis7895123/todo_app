@@ -20,15 +20,28 @@ function App(): JSX.Element {
   const { tasks, addTask, updateTask } = useTasks()
 
   // todoタスク
-  const todoTasks = tasks.filter((task) => {
-    return !task.isDone
-  })
+  const todoTasks = tasks
+    .filter((task) => {
+      return !task.isDone
+    })
+    .sort((prevTask, currentTask) => {
+      const prevTime = new Date(prevTask.deadline).getTime()
+      const currentTime = new Date(currentTask.deadline).getTime()
+      return prevTime - currentTime
+    })
 
   // 完了タスク
-  const doneTasks = tasks.filter((task) => {
-    return task.isDone
-  })
+  const doneTasks = tasks
+    .filter((task) => {
+      return task.isDone
+    })
+    .sort((prevTask, currentTask) => {
+      const prevTime = new Date(prevTask.deadline).getTime()
+      const currentTime = new Date(currentTask.deadline).getTime()
+      return prevTime - currentTime
+    })
 
+  // 新規タスクの作成
   const onAddNewTask = () => {
     if (!newTaskTitle) return
 
@@ -36,7 +49,6 @@ function App(): JSX.Element {
       title: newTaskTitle,
     }
 
-    // 新規タスクの作成
     addTask(newTask)
 
     // タスク作成したらinputを空にする
@@ -47,6 +59,7 @@ function App(): JSX.Element {
     setNewTaskTitle(event.target.value)
   }
 
+  // 完了チェック
   const onCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
     // taskIdをvalueから取得
     const taskId = Number(event.target.value)
@@ -70,6 +83,7 @@ function App(): JSX.Element {
     setEditTask(checkTask)
   }
 
+  // タスクをクリック
   const onClickItem = (task: Task) => {
     // 編集するタスクをセット
     setEditTask(task)
