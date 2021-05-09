@@ -104,7 +104,7 @@ function App(): JSX.Element {
           onCheck={onCheck}
         />
 
-        <h2>タスク</h2>
+        <h2>TODOアプリ</h2>
 
         <TaskInputDiv>
           <TaskTextField
