@@ -144,17 +144,31 @@ function App(): JSX.Element {
                   />
 
                   <div>
-                    <Button
-                      color="primary"
-                      onClick={() =>
-                        onUpdateTaskDeadline({
-                          task,
-                          deadline: getFormattedDate(new Date()),
-                        })
-                      }
-                    >
-                      今日の予定に追加
-                    </Button>
+                    {task.deadline === getFormattedDate(new Date()) ? (
+                      <Button
+                        color="secondary"
+                        onClick={() =>
+                          onUpdateTaskDeadline({
+                            task,
+                            deadline: '',
+                          })
+                        }
+                      >
+                        今日の予定から削除
+                      </Button>
+                    ) : (
+                      <Button
+                        color="primary"
+                        onClick={() =>
+                          onUpdateTaskDeadline({
+                            task,
+                            deadline: getFormattedDate(new Date()),
+                          })
+                        }
+                      >
+                        今日の予定に追加
+                      </Button>
+                    )}
 
                     <Button color="primary">期限日の追加</Button>
                   </div>

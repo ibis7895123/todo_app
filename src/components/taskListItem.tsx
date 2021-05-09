@@ -2,6 +2,7 @@ import React from 'react'
 import { TaskListItemProps } from 'src/types/components/taskListItem'
 import styled from 'styled-components'
 import { TaskCheckbox } from 'src/components/materialUi'
+import { getFormattedDate } from 'src/utils/dateUtils'
 
 export const TaskListItem = (props: TaskListItemProps): JSX.Element => {
   const { task, onCheck, onClickItem } = props
@@ -17,31 +18,15 @@ export const TaskListItem = (props: TaskListItemProps): JSX.Element => {
 
       <TaskTextDiv onClick={() => onClickItem(task)}>
         <TaskTitle>{task.title}</TaskTitle>
-        <TaskDeadline>期限: {task.deadline}</TaskDeadline>
+
+        {task.deadline && (
+          <TaskDeadline>
+            {task.deadline === getFormattedDate(new Date())
+              ? '今日の予定'
+              : `期限: ${task.deadline}`}
+          </TaskDeadline>
+        )}
       </TaskTextDiv>
-
-      {/* <div>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => deleteTask(task)}
-      >
-        削除
-      </Button>
-
-      <Button
-        variant="contained"
-        onClick={() =>
-          updateTask({
-            id: task.id,
-            title: task.title + ' update',
-            deadline: getFormattedDate(new Date()),
-          })
-        }
-      >
-        アップデート
-      </Button>
-    </div> */}
     </TaskDiv>
   )
 }
@@ -55,6 +40,8 @@ const TaskDiv = styled.div`
 `
 
 const TaskTextDiv = styled.div`
+  display: flex;
+  flex-direction: column;
   text-align: left;
   width: 100%;
   padding-left: 10px;
@@ -62,6 +49,9 @@ const TaskTextDiv = styled.div`
 
 const TaskTitle = styled.p`
   margin: 0 0 5px;
+  display: flex;
+  align-items: center;
+  height: 100%;
 `
 
 const TaskDeadline = styled.span`
