@@ -21,9 +21,9 @@ export const TaskListItem = (props: TaskListItemProps): JSX.Element => {
 
         {task.deadline && (
           <TaskDeadline>
-            {isToday(task.deadline)
+            {isToday(new Date(task.deadline))
               ? '今日の予定'
-              : `期限: ${getFormattedDate(task.deadline)}`}
+              : `期限: ${getFormattedDate(new Date(task.deadline))}`}
           </TaskDeadline>
         )}
       </TaskTextDiv>

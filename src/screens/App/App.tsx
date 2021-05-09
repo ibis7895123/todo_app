@@ -13,7 +13,7 @@ function App(): JSX.Element {
   const [editTask, setEditTask] = useState<Task>({
     id: 0,
     title: '',
-    deadline: new Date(),
+    deadline: '',
     isDone: false,
   })
   const [dialogVisible, setDialogVisible] = useState<boolean>(false)
@@ -62,7 +62,7 @@ function App(): JSX.Element {
     deadline,
   }: {
     task: Task
-    deadline: Date | null
+    deadline: string
   }) => {
     const updatedTask: Task = {
       ...task,
@@ -88,14 +88,10 @@ function App(): JSX.Element {
   }
 
   const onDeadlineChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const updateDeadline = new Date(event.target.value)
-
-    setEditTask({
-      ...editTask,
-      deadline: updateDeadline,
+    onUpdateTaskDeadline({
+      task: editTask,
+      deadline: new Date(event.target.value).toString(),
     })
-
-    console.log({ updateDeadline, date: editTask.deadline })
   }
 
   const onCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -154,13 +150,13 @@ function App(): JSX.Element {
             </div>
 
             <div>
-              {isToday(editTask.deadline) ? (
+              {isToday(new Date(editTask.deadline)) ? (
                 <Button
                   color="secondary"
                   onClick={() =>
                     onUpdateTaskDeadline({
                       task: editTask,
-                      deadline: null,
+                      deadline: '',
                     })
                   }
                 >
@@ -172,7 +168,7 @@ function App(): JSX.Element {
                   onClick={() =>
                     onUpdateTaskDeadline({
                       task: editTask,
-                      deadline: new Date(),
+                      deadline: new Date().toString(),
                     })
                   }
                 >
@@ -183,7 +179,7 @@ function App(): JSX.Element {
               <Button color="primary">期限日の追加</Button>
               <TextField
                 type="date"
-                value={getTextFieldValueDate(editTask.deadline)}
+                value={getTextFieldValueDate(new Date(editTask.deadline))}
                 onChange={onDeadlineChange}
               />
             </div>
