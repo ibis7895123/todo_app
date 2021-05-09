@@ -157,7 +157,7 @@ const TaskDialog = styled(Dialog)`
 `
 
 const ContainerDiv = styled.div`
-  padding: 30px;
+  padding: 40px 30px 30px;
   padding-left: 60px;
   height: 100%;
 `
@@ -188,4 +188,6 @@ const MemoDiv = styled.div`
 
 const DeleteButtonDiv = styled.div`
   padding-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 `
