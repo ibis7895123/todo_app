@@ -17,7 +17,11 @@ export const TaskListItem = (props: TaskListItemProps): JSX.Element => {
       />
 
       <TaskTextDiv onClick={() => onClickItem(task)}>
-        <TaskTitle>{task.title}</TaskTitle>
+        <TaskTitle
+          style={task.isDone ? { textDecoration: 'line-through' } : {}}
+        >
+          {task.title}
+        </TaskTitle>
 
         {task.deadline && (
           <TaskDeadline>
