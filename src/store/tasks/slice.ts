@@ -21,6 +21,7 @@ const taskSlice = createSlice({
             id: state.currentId,
             title: action.payload.title,
             deadline: '',
+            memo: '',
             isDone: false,
           },
         ],
@@ -34,6 +35,7 @@ const taskSlice = createSlice({
             id: action.payload.id,
             title: action.payload.title,
             deadline: action.payload.deadline,
+            memo: action.payload.memo,
             isDone: action.payload.isDone,
           }
         }

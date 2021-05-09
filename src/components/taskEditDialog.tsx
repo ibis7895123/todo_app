@@ -10,6 +10,7 @@ export const TaskEditDialog = (props: TaskEditDialogProps): JSX.Element => {
   const { initialTask, isVisible, dialogClose, onCheck } = props
   const { tasks, deleteTask, updateTask } = useTasks()
   const [updateTitle, setUpdateTitle] = useState<string>(initialTask.title)
+  const [updateMemo, setUpdateMemo] = useState<string>(initialTask.memo)
 
   // initialTaskのidでreduxのtasksを検索する(更新検知のため)
   const task = tasks.find((task) => {
@@ -17,10 +18,11 @@ export const TaskEditDialog = (props: TaskEditDialogProps): JSX.Element => {
   })
 
   useEffect(() => {
-    if (!task?.title) return
+    if (!task) return
 
     // reduxが更新されたらupdateTitleを更新
     setUpdateTitle(task.title)
+    setUpdateMemo(task.memo)
   }, [task])
 
   // タスクがなければ空のhtmlを返す
@@ -32,6 +34,18 @@ export const TaskEditDialog = (props: TaskEditDialogProps): JSX.Element => {
     const updatedTask: Task = {
       ...task,
       title: updateTitle,
+    }
+
+    // タスクのアップデート
+    updateTask(updatedTask)
+  }
+
+  const onUpdateTaskMemo = (task: Task) => {
+    if (!updateMemo) return
+
+    const updatedTask: Task = {
+      ...task,
+      memo: updateMemo,
     }
 
     // タスクのアップデート
@@ -103,15 +117,27 @@ export const TaskEditDialog = (props: TaskEditDialogProps): JSX.Element => {
           />
         </ButtonsDiv>
 
-        <p>メモ</p>
+        <MemoDiv>
+          <TextField
+            label="メモ"
+            type="text"
+            value={updateMemo}
+            multiline
+            rows={10}
+            onChange={(event) => setUpdateMemo(event.target.value)}
+            onBlur={() => onUpdateTaskMemo(task)}
+          />
+        </MemoDiv>
 
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => deleteTask(task)}
-        >
-          削除
-        </Button>
+        <DeleteButtonDiv>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => deleteTask(task)}
+          >
+            削除
+          </Button>
+        </DeleteButtonDiv>
       </ContainerDiv>
     </TaskDialog>
   )
@@ -132,11 +158,12 @@ const TaskDialog = styled(Dialog)`
 
 const ContainerDiv = styled.div`
   padding: 30px;
+  padding-left: 60px;
   height: 100%;
 `
 
 const InputDiv = styled.div`
-  margin-left: -10px;
+  margin-left: -40px;
 `
 
 const DeadlineText = styled.p`
@@ -153,4 +180,12 @@ const ButtonsDiv = styled.div`
   button {
     padding: unset;
   }
+`
+
+const MemoDiv = styled.div`
+  padding-top: 20px;
+`
+
+const DeleteButtonDiv = styled.div`
+  padding-top: 20px;
 `

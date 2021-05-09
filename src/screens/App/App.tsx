@@ -12,6 +12,7 @@ function App(): JSX.Element {
     id: 0,
     title: '',
     deadline: '',
+    memo: '',
     isDone: false,
   })
   const [dialogVisible, setDialogVisible] = useState<boolean>(false)
