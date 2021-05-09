@@ -6,6 +6,7 @@ import { NewTask, Task } from 'src/types/task'
 import { TaskTextField } from 'src/components/materialUi'
 import { TaskListItem } from 'src/components/taskListItem'
 import './App.css'
+import { getFormattedDate } from 'src/utils/dateUtils'
 
 function App(): JSX.Element {
   const [newTaskTitle, setNewTaskTitle] = useState<string>('')
@@ -136,6 +137,14 @@ function App(): JSX.Element {
                   </div>
 
                   <p>メモ</p>
+
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => deleteTask(task)}
+                  >
+                    削除
+                  </Button>
                 </DialogContainerDiv>
               </TaskDialog>
 
@@ -185,6 +194,8 @@ const TaskDialog = styled(Dialog)`
   }
   .MuiDialog-scrollPaper {
     justify-content: flex-end;
+  }
+  .MuiDialog-paperScrollPaper {
     max-height: unset;
   }
 `
