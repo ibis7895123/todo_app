@@ -105,7 +105,7 @@ function App(): JSX.Element {
       isDone: !checkTask.isDone,
     }
 
-    // 新規タスクの作成
+    // タスクのアップデート
     updateTask(checkTask)
     setEditTask(checkTask)
   }
