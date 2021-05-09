@@ -15,7 +15,7 @@ export const TaskListItem = (props: TaskListItemProps): JSX.Element => {
         value={task.id} // taskIdでどれをチェックしたか特定する
       />
 
-      <TaskTextDiv onClick={onClickItem}>
+      <TaskTextDiv onClick={() => onClickItem(task)}>
         <TaskTitle>{task.title}</TaskTitle>
         <TaskDeadline>期限: {task.deadline}</TaskDeadline>
       </TaskTextDiv>

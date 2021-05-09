@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
-import { Button, Dialog } from '@material-ui/core'
+import { Button, Dialog, TextField } from '@material-ui/core'
 import styled from 'styled-components'
 import useTasks from 'src/store/tasks/hooks'
-import { NewTask } from 'src/types/task'
+import { NewTask, Task } from 'src/types/task'
 import { TaskTextField } from 'src/components/materialUi'
 import { TaskListItem } from 'src/components/taskListItem'
 import './App.css'
 
 function App(): JSX.Element {
-  const [inputTaskTitle, setInputTaskTitle] = useState<string>('')
+  const [newTaskTitle, setNewTaskTitle] = useState<string>('')
+  const [editTaskTitle, setEditTaskTitle] = useState<string>('')
   const [dialogVisible, setDialogVisible] = useState<boolean>(false)
 
   const {
@@ -30,21 +31,41 @@ function App(): JSX.Element {
   })
 
   const onAddNewTask = () => {
-    if (!inputTaskTitle) return
+    if (!newTaskTitle) return
 
     const newTask: NewTask = {
-      title: inputTaskTitle,
+      title: newTaskTitle,
     }
 
     // 新規タスクの作成
     addTask(newTask)
 
     // タスク作成したらinputを空にする
-    setInputTaskTitle('')
+    setNewTaskTitle('')
   }
 
-  const onTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputTaskTitle(event.target.value)
+  const onUpdateTask = (task: Task) => {
+    console.log(event)
+
+    if (!editTaskTitle) return
+
+    const updatedTask: Task = {
+      ...task,
+      title: editTaskTitle,
+    }
+
+    // 新規タスクの作成
+    updateTask(updatedTask)
+  }
+
+  const onNewTaskTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTaskTitle(event.target.value)
+  }
+
+  const onEditTaskTitleChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setEditTaskTitle(event.target.value)
   }
 
   const onCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,8 +83,10 @@ function App(): JSX.Element {
     toggleIsDoneTask(checkTask)
   }
 
-  const onClickItem = (event: React.MouseEvent<HTMLDivElement>) => {
-    console.log(event)
+  const onClickItem = (task: Task) => {
+    // 編集するタイトルをセット
+    setEditTaskTitle(task.title)
+
     setDialogVisible(true)
   }
 
@@ -74,18 +97,14 @@ function App(): JSX.Element {
   return (
     <div className="App">
       <header className="App-header">
-        <TaskEditDialog open={dialogVisible} onClose={dialogClose}>
-          <DialogContainerDiv>テスト</DialogContainerDiv>
-        </TaskEditDialog>
-
         <h2>タスク</h2>
 
         <TaskInputDiv>
           <TaskTextField
             label="タスクを入力"
             type="text"
-            value={inputTaskTitle}
-            onChange={onTextChange}
+            value={newTaskTitle}
+            onChange={onNewTaskTitleChange}
             // onBlur={onAddNewTask}
           />
 
@@ -100,12 +119,32 @@ function App(): JSX.Element {
 
         {todoTasks.map((task) => {
           return (
-            <TaskListItem
-              key={task.id}
-              task={task}
-              onCheck={onCheck}
-              onClickItem={onClickItem}
-            />
+            <div key={task.id}>
+              <TaskDialog open={dialogVisible} onClose={dialogClose}>
+                <DialogContainerDiv>
+                  <TextField
+                    label="タスクを編集"
+                    type="text"
+                    value={editTaskTitle}
+                    onChange={onEditTaskTitleChange}
+                    onBlur={() => onUpdateTask(task)}
+                  />
+
+                  <div>
+                    <Button color="primary">今日の予定に追加</Button>
+                    <Button color="primary">期限日の追加</Button>
+                  </div>
+
+                  <p>メモ</p>
+                </DialogContainerDiv>
+              </TaskDialog>
+
+              <TaskListItem
+                task={task}
+                onCheck={onCheck}
+                onClickItem={() => onClickItem(task)}
+              />
+            </div>
           )
         })}
 
@@ -139,7 +178,7 @@ const TaskDoneTitle = styled.h3`
   margin-top: 50px;
 `
 
-const TaskEditDialog = styled(Dialog)`
+const TaskDialog = styled(Dialog)`
   .MuiDialog-paper {
     margin: unset;
     height: 100%;
@@ -153,7 +192,6 @@ const TaskEditDialog = styled(Dialog)`
 const DialogContainerDiv = styled.div`
   padding: 30px;
   height: 100%;
-  align-self: center;
 `
 
 export default App
