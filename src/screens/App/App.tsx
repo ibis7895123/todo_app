@@ -74,9 +74,9 @@ function App(): JSX.Element {
   return (
     <div className="App">
       <header className="App-header">
-        <Dialog open={dialogVisible} onClose={dialogClose}>
-          テスト
-        </Dialog>
+        <TaskEditDialog open={dialogVisible} onClose={dialogClose}>
+          <DialogContainerDiv>テスト</DialogContainerDiv>
+        </TaskEditDialog>
 
         <h2>タスク</h2>
 
@@ -137,6 +137,23 @@ const AddTaskButton = styled(Button)`
 
 const TaskDoneTitle = styled.h3`
   margin-top: 50px;
+`
+
+const TaskEditDialog = styled(Dialog)`
+  .MuiDialog-paper {
+    margin: unset;
+    height: 100%;
+  }
+  .MuiDialog-scrollPaper {
+    justify-content: flex-end;
+    max-height: unset;
+  }
+`
+
+const DialogContainerDiv = styled.div`
+  padding: 30px;
+  height: 100%;
+  align-self: center;
 `
 
 export default App
