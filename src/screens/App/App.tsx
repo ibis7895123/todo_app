@@ -134,18 +134,20 @@ function App(): JSX.Element {
           )
         })}
 
-        <TaskDoneTitle>完了</TaskDoneTitle>
+        <TaskDoneDiv>
+          <TaskDoneTitle>完了</TaskDoneTitle>
 
-        {doneTasks.map((task) => {
-          return (
-            <TaskListItem
-              key={task.id}
-              task={task}
-              onCheck={onCheck}
-              onClickItem={() => onClickItem(task)}
-            />
-          )
-        })}
+          {doneTasks.map((task) => {
+            return (
+              <TaskListItem
+                key={task.id}
+                task={task}
+                onCheck={onCheck}
+                onClickItem={() => onClickItem(task)}
+              />
+            )
+          })}
+        </TaskDoneDiv>
       </header>
     </div>
   )
@@ -160,8 +162,10 @@ const AddTaskButton = styled(Button)`
   margin-left: 10px;
 `
 
-const TaskDoneTitle = styled.h3`
-  margin-top: 70px;
+const TaskDoneTitle = styled.h3``
+
+const TaskDoneDiv = styled.div`
+  padding: 50px 0 70px;
 `
 
 export default App
